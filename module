@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module 1: Understanding the Framework as a Whole</title>
+  <style>
+    :root{
+      --primary:#0f5c7a;
+      --primary-dark:#0a445a;
+      --accent:#f4b942;
+      --accent-soft:#fff4d6;
+      --bg:#f7f9fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --success:#1f8b4c;
+      --danger:#b42318;
+      --border:#d7dee7;
+      --shadow:0 10px 25px rgba(15, 92, 122, 0.08);
+      --radius:16px;
+    }
+
+    * { box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, var(--primary), #2a7a9a);
+      color:white;
+      padding:32px;
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .hero h1{
+      margin:0 0 10px;
+      font-size:2rem;
+    }
+
+    .hero p{
+      margin:8px 0;
+      max-width:850px;
+    }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .badge{
+      background:rgba(255,255,255,0.15);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:0.95rem;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:20px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+
+    .sidebar h3{
+      margin-top:0;
+      color:var(--primary);
+      font-size:1.05rem;
+    }
+
+    .toc a{
+      display:block;
+      padding:10px 12px;
+      margin:6px 0;
+      text-decoration:none;
+      color:var(--text);
+      border-radius:10px;
+      transition:0.2s;
+    }
+
+    .toc a:hover{
+      background:#eef6fa;
+      color:var(--primary);
+    }
+
+    .progress-wrap{
+      margin-top:18px;
+    }
+
+    .progress-label{
+      display:flex;
+      justify-content:space-between;
+      font-size:0.9rem;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .progress{
+      width:100%;
+      height:10px;
+      background:#e8eef3;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .progress-bar{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg, var(--accent), #ffcf70);
+      transition:width 0.3s ease;
+    }
+
+    .content section{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin-bottom:20px;
+    }
+
+    h2{
+      color:var(--primary);
+      margin-top:0;
+    }
+
+    h3{
+      color:var(--primary-dark);
+    }
+
+    .section-intro{
+      color:var(--muted);
+      margin-top:-4px;
+    }
+
+    .callout{
+      background:#eef8fc;
+      border-left:5px solid var(--primary);
+      padding:16px;
+      border-radius:12px;
+      margin:16px 0;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+    }
+
+    .grid-4{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      background:white;
+    }
+
+    .card h4{
+      margin-top:0;
+      color:var(--primary);
+    }
+
+    .mini{
+      font-size:0.95rem;
+      color:var(--muted);
+    }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:10px 0 0;
+    }
+
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:white;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .pill:hover, .pill.active{
+      background:var(--primary);
+      color:white;
+      border-color:var(--primary);
+    }
+
+    .reveal-box{
+      margin-top:16px;
+      background:#fafcff;
+      border:1px dashed var(--border);
+      border-radius:12px;
+      padding:16px;
+      min-height:90px;
+    }
+
+    .matrix{
+      overflow-x:auto;
+      margin-top:14px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:760px;
+      background:white;
+    }
+
+    th, td{
+      border:1px solid var(--border);
+      padding:12px;
+      text-align:left;
+      vertical-align:top;
+      font-size:0.95rem;
+    }
+
+    th{
+      background:#f0f7fa;
+      color:var(--primary-dark);
+    }
+
+    .quiz-item{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .quiz-options label{
+      display:block;
+      padding:10px 12px;
+      margin:8px 0;
+      border:1px solid var(--border);
+      border-radius:10px;
+      cursor:pointer;
+      background:#fff;
+    }
+
+    .quiz-options input{
+      margin-right:8px;
+    }
+
+    .feedback{
+      margin-top:10px;
+      font-size:0.95rem;
+      font-weight:bold;
+    }
+
+    .correct{ color:var(--success); }
+    .incorrect{ color:var(--danger); }
+
+    .btn{
+      display:inline-block;
+      border:none;
+      background:var(--primary);
+      color:white;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:0.95rem;
+      transition:0.2s;
+      margin-right:8px;
+      margin-top:8px;
+    }
+
+    .btn:hover{
+      background:var(--primary-dark);
+    }
+
+    .btn-secondary{
+      background:#eef6fa;
+      color:var(--primary);
+      border:1px solid #cfe4ee;
+    }
+
+    .btn-secondary:hover{
+      background:#dfeff6;
+    }
+
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    label{
+      font-weight:bold;
+      display:block;
+      margin-bottom:6px;
+    }
+
+    select, input[type="text"], textarea{
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:12px;
+      font-size:0.95rem;
+      background:white;
+    }
+
+    textarea{
+      min-height:110px;
+      resize:vertical;
+    }
+
+    .checklist{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:10px 0 16px;
+    }
+
+    .checklist label{
+      font-weight:normal;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:10px;
+      background:#fff;
+    }
+
+    details{
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px 14px;
+      margin-bottom:10px;
+      background:#fff;
+    }
+
+    summary{
+      cursor:pointer;
+      font-weight:bold;
+      color:var(--primary-dark);
+    }
+
+    .ai-box{
+      background:var(--accent-soft);
+      border:1px solid #f2d487;
+      border-radius:14px;
+      padding:16px;
+      margin-top:14px;
+    }
+
+    .prompt{
+      background:white;
+      border:1px dashed #d1b15f;
+      border-radius:10px;
+      padding:12px;
+      margin-top:10px;
+      font-family: "Courier New", monospace;
+      font-size:0.92rem;
+      white-space:pre-wrap;
+    }
+
+    .footer-nav{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .small-note{
+      font-size:0.9rem;
+      color:var(--muted);
+    }
+
+    @media (max-width: 900px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+      .sidebar{
+        position:relative;
+        top:auto;
+      }
+      .grid-3, .grid-4, .form-row, .checklist{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>Module 1: Understanding the Framework as a Whole</h1>
+      <p>
+        This module introduces the overall structure of the GenAI-Responsive Competency Framework for University Teachers.
+        You will explore the four dimensions, two perspectives, and three competency levels, then connect the Framework to your own teaching context.
+      </p>
+      <div class="meta">
+        <span class="badge">Estimated time: 25 min</span>
+        <span class="badge">Recommended before: Self-assessment interpretation</span>
+        <span class="badge">Format: Interactive + reflective</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h3>Module navigation</h3>
+        <nav class="toc">
+          <a href="#overview">Start here</a>
+          <a href="#big-picture">1.1 The Big Picture</a>
+          <a href="#dimensions">The Four Dimensions</a>
+          <a href="#matrix">Why 4 × 3 × 2?</a>
+          <a href="#quiz">Knowledge recap</a>
+          <a href="#practice">1.2 Connect to Your Practice</a>
+          <a href="#goals">Set your learning goals</a>
+          <a href="#tips">Contextualising the questions</a>
+          <a href="#wrap-up">Wrap-up</a>
+        </nav>
+
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Module progress</span>
+            <span id="progressText">0%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+
+        <p class="small-note" style="margin-top:14px;">
+          Tip: your reflections and goals can be saved locally in this browser as a simple prototype.
+        </p>
+      </aside>
+
+      <main class="content">
+        <section id="overview" class="track">
+          <h2>Start here</h2>
+          <p class="section-intro">
+            Before focusing on individual dimensions, it is helpful to see the Framework as a complete system.
+          </p>
+
+          <div class="callout">
+            <strong>By the end of this module, you should be able to:</strong>
+            <ul>
+              <li>describe the structure of the Framework</li>
+              <li>explain why it contains 24 cells</li>
+              <li>distinguish among the four dimensions, two perspectives, and three levels</li>
+              <li>identify how the Framework relates to your own teaching practice</li>
+            </ul>
+          </div>
+
+          <button class="btn" onclick="markComplete('overview')">Mark section as completed</button>
+        </section>
+
+        <section id="big-picture" class="track">
+          <h2>1.1 The Big Picture</h2>
+          <p class="section-intro">
+            The Framework is organised to help university teachers understand both their own GenAI capabilities and how they can empower students to use GenAI responsibly and effectively.
+          </p>
+
+          <h3>Explore the structure</h3>
+          <p>Click each element to reveal its role in the Framework.</p>
+
+          <div class="pill-row">
+            <button class="pill" onclick="showStructure('dimensions', this)">4 Dimensions</button>
+            <button class="pill" onclick="showStructure('levels', this)">3 Levels</button>
+            <button class="pill" onclick="showStructure('perspectives', this)">2 Perspectives</button>
+            <button class="pill" onclick="showStructure('cells', this)">24 Cells</button>
+          </div>
+
+          <div class="reveal-box" id="structureReveal">
+            Select an item above to explore the Framework structure.
+          </div>
+
+          <div class="ai-box">
+            <strong>Ask AI for support</strong>
+            <p class="small-note">
+              You may use the chatbot to help you interpret the Framework in your own context.
+            </p>
+            <button class="btn btn-secondary" onclick="insertPrompt('prompt1')">Show example AI prompt</button>
+            <div class="prompt" id="prompt1" style="display:none;">
+I am a university teacher trying to understand a GenAI competency framework with 4 dimensions, 3 levels, and 2 perspectives. Explain it to me in plain language and give one example from higher education for each part.
+            </div>
+          </div>
+
+          <button class="btn" onclick="markComplete('big-picture')">Mark section as completed</button>
+        </section>
+
+        <section id="dimensions" class="track">
+          <h2>The Four Dimensions in Brief</h2>
+          <p class="section-intro">
+            Each dimension highlights an important area of GenAI-responsive teaching practice.
+          </p>
+
+          <div class="grid-4">
+            <div class="card">
+              <h4>1. GenAI Literacy</h4>
+              <p>Understanding what GenAI is, how it works, what it can and cannot do, and how to use it ethically, critically, and responsibly.</p>
+              <p class="mini"><strong>Example:</strong> Evaluating the reliability and bias of GenAI outputs before using them in academic work.</p>
+            </div>
+
+            <div class="card">
+              <h4>2. Curriculum / Learning Design</h4>
+              <p>Using GenAI to shape course design, learning activities, alignment, and the broader structure of students’ learning experiences.</p>
+              <p class="mini"><strong>Example:</strong> Redesigning a task so students use GenAI as a planning tool rather than as a shortcut.</p>
+            </div>
+
+            <div class="card">
+              <h4>3. Teaching and Learning</h4>
+              <p>Using GenAI in day-to-day teaching processes, facilitation, interaction, feedback, and support for learning engagement.</p>
+              <p class="mini"><strong>Example:</strong> Using GenAI to create examples, explanations, or scaffolds for class activities.</p>
+            </div>
+
+            <div class="card">
+              <h4>4. Assessment</h4>
+              <p>Rethinking assessment design and feedback practices in response to GenAI, including integrity, authenticity, and innovation.</p>
+              <p class="mini"><strong>Example:</strong> Designing assessment tasks that require process evidence, reflection, or application in context.</p>
+            </div>
+          </div>
+
+          <h3 style="margin-top:24px;">Two perspectives</h3>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Teacher’s own usage</h4>
+              <p>Focuses on what teachers themselves know and do with GenAI in their professional practice.</p>
+            </div>
+            <div class="card">
+              <h4>Empowering students’ usage</h4>
+              <p>Focuses on how teachers support students in using GenAI effectively, responsibly, and critically.</p>
+            </div>
+            <div class="card">
+              <h4>Why both matter</h4>
+              <p>Teachers need both personal capability and pedagogical capability. Using GenAI yourself does not automatically mean you can teach students to use it well.</p>
+            </div>
+          </div>
+
+          <h3 style="margin-top:24px;">Three competency levels</h3>
+          <div class="grid-3">
+            <div class="card">
+              <h4>Basic</h4>
+              <p>Foundational awareness and initial application. Often involves understanding concepts, trying simple practices, and recognising key issues.</p>
+            </div>
+            <div class="card">
+              <h4>Intermediate</h4>
+              <p>More confident and contextualised use. Often involves purposeful integration, adaptation, and guided support for students.</p>
+            </div>
+            <div class="card">
+              <h4>Advanced</h4>
+              <p>Strategic, critical, and innovative practice. Often involves redesign, leadership, collaboration, and sophisticated use in complex contexts.</p>
+            </div>
+          </div>
+
+          <button class="btn" onclick="markComplete('dimensions')">Mark section as completed</button>
+        </section>
+
+        <section id="matrix" class="track">
+          <h2>Why 4 × 3 × 2 = 24?</h2>
+          <p class="section-intro">
+            The Framework combines dimensions, levels, and perspectives into a matrix of 24 cells.
+          </p>
+
+          <div class="callout">
+            <strong>Formula:</strong> 4 dimensions × 3 levels × 2 perspectives = 24 competency cells
+          </div>
+
+          <div class="matrix">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>Teacher’s own usage</th>
+                  <th>Empowering students’ usage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>GenAI Literacy</strong></td>
+                  <td>How the teacher understands and uses GenAI critically and responsibly</td>
+                  <td>How the teacher helps students develop GenAI literacy</td>
+                </tr>
+                <tr>
+                  <td><strong>Curriculum / Learning Design</strong></td>
+                  <td>How the teacher uses GenAI in planning and design</td>
+                  <td>How the teacher designs curriculum to support students’ use of GenAI</td>
+                </tr>
+                <tr>
+                  <td><strong>Teaching and Learning</strong></td>
+                  <td>How the teacher uses GenAI in teaching practice</td>
+                  <td>How the teacher guides students’ use of GenAI for learning</td>
+                </tr>
+                <tr>
+                  <td><strong>Assessment</strong></td>
+                  <td>How the teacher uses GenAI in assessment-related work</td>
+                  <td>How the teacher designs assessment to address or integrate student GenAI use</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style="margin-top:16px;">
+            Each row above is then considered across <strong>Basic</strong>, <strong>Intermediate</strong>, and <strong>Advanced</strong> levels, resulting in 24 specific cells.
+          </p>
+
+          <div class="ai-box">
+            <strong>Possible chatbot use here</strong>
+            <p class="small-note">
+              A chatbot can help users translate abstract framework language into discipline-specific examples.
+            </p>
+            <button class="btn btn-secondary" onclick="insertPrompt('prompt2')">Show discipline-specific AI prompt</button>
+            <div class="prompt" id="prompt2" style="display:none;">
+I teach [your discipline]. Give me examples of what Basic, Intermediate, and Advanced capability might look like for both teacher use and student empowerment in the area of [choose one dimension].
+            </div>
+          </div>
+
+          <button class="btn" onclick="markComplete('matrix')">Mark section as completed</button>
+        </section>
+
+        <section id="quiz" class="track">
+          <h2>Knowledge recap</h2>
+          <p class="section-intro">
+            Check your understanding before moving on.
+          </p>
+
+          <div class="quiz-item">
+            <p><strong>1.</strong> How many competency cells are in the Framework?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q1" value="a"> 12</label>
+              <label><input type="radio" name="q1" value="b"> 16</label>
+              <label><input type="radio" name="q1" value="c"> 24</label>
+            </div>
+            <div id="fb1" class="feedback"></div>
+          </div>
+
+          <div class="quiz-item">
+            <p><strong>2.</strong> Which of the following is <em>not</em> one of the four dimensions?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q2" value="a"> GenAI Literacy</label>
+              <label><input type="radio" name="q2" value="b"> Teaching and Learning</label>
+              <label><input type="radio" name="q2" value="c"> Institutional Marketing</label>
+            </div>
+            <div id="fb2" class="feedback"></div>
+          </div>
+
+          <div class="quiz-item">
+            <p><strong>3.</strong> The two perspectives in the Framework are:</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q3" value="a"> Novice and Expert</label>
+              <label><input type="radio" name="q3" value="b"> Teacher’s own usage and Empowering students’ usage</label>
+              <label><input type="radio" name="q3" value="c"> Undergraduate and Postgraduate</label>
+            </div>
+            <div id="fb3" class="feedback"></div>
+          </div>
+
+          <div class="quiz-item">
+            <p><strong>4.</strong> What is the main difference between Basic, Intermediate, and Advanced?</p>
+            <div class="quiz-options">
+              <label><input type="radio" name="q4" value="a"> They represent increasing levels of competency and sophistication</label>
+              <label><input type="radio" name="q4" value="b"> They represent different academic disciplines</label>
+              <label><input type="radio" name="q4" value="c"> They represent different software tools</label>
+            </div>
+            <div id="fb4" class="feedback"></div>
+          </div>
+
+          <button class="btn" onclick="checkQuiz()">Check answers</button>
+          <button class="btn btn-secondary" onclick="markComplete('quiz')">Mark section as completed</button>
+        </section>
+
+        <section id="practice" class="track">
+          <h2>1.2 How the Framework Connects to Your Practice</h2>
+          <p class="section-intro">
+            The Framework becomes meaningful when you interpret it in relation to your own teaching role, disciplinary context, and learners.
+          </p>
+
+          <div class="form-row">
+            <div>
+              <label for="role">Your current role</label>
+              <select id="role">
+                <option value="">Select one</option>
+                <option>Lecturer / Assistant Professor</option>
+                <option>Course coordinator</option>
+                <option>Programme leader</option>
+                <option>Educational developer</option>
+                <option>Teaching assistant</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="discipline">Discipline / subject area</label>
+              <input type="text" id="discipline" placeholder="e.g. Education, Business, STEM, Humanities" />
+            </div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <label for="context">Briefly describe your teaching context</label>
+            <textarea id="context" placeholder="e.g. I teach large undergraduate classes; students are new to academic writing; I am concerned about assessment integrity and also want to explore productive GenAI use."></textarea>
+          </div>
+
+          <button class="btn" onclick="saveFieldData()">Save my context</button>
+          <button class="btn btn-secondary" onclick="markComplete('practice')">Mark section as completed</button>
+        </section>
+
+        <section id="goals" class="track">
+          <h2>Set your own learning goals</h2>
+          <p class="section-intro">
+            Choose what you most want to improve. This can help personalise the next modules and recommended resources.
+          </p>
+
+          <div class="checklist">
+            <label><input type="checkbox" value="Improve my own understanding of GenAI capabilities and limitations"> Improve my own understanding of GenAI capabilities and limitations</label>
+            <label><input type="checkbox" value="Redesign teaching activities to use GenAI more meaningfully"> Redesign teaching activities to use GenAI more meaningfully</label>
+            <label><input type="checkbox" value="Help students use GenAI critically and ethically"> Help students use GenAI critically and ethically</label>
+            <label><input type="checkbox" value="Adapt assessment in response to GenAI"> Adapt assessment in response to GenAI</label>
+            <label><input type="checkbox" value="Interpret my self-assessment report more clearly"> Interpret my self-assessment report more clearly</label>
+            <label><input type="checkbox" value="Develop an action plan for my course or programme"> Develop an action plan for my course or programme</label>
+          </div>
+
+          <label for="goalText">Write 1–2 personal goals for this workshop</label>
+          <textarea id="goalText" placeholder="Example: I want to understand how to move from basic awareness to more intentional use of GenAI in assessment design."></textarea>
+
+          <button class="btn" onclick="saveGoals()">Save my goals</button>
+          <button class="btn btn-secondary" onclick="insertPrompt('prompt3')">Show AI goal-refining prompt</button>
+          <div class="prompt" id="prompt3" style="display:none;">
+Based on my teaching context and self-assessment, help me turn my general interest in GenAI into 2 specific professional learning goals. Make them realistic and relevant to higher education teaching.
+          </div>
+
+          <div id="goalSaved" class="feedback"></div>
+          <button class="btn btn-secondary" onclick="markComplete('goals')">Mark section as completed</button>
+        </section>
+
+        <section id="tips" class="track">
+          <h2>Tips for contextualising the self-assessment questions</h2>
+          <p class="section-intro">
+            Self-assessment is most useful when interpreted in context. Use the tips below when reading or answering the questions.
+          </p>
+
+          <details open>
+            <summary>1. Think about your actual teaching role, not an idealised one</summary>
+            <p>If you are not responsible for curriculum approval or programme-level assessment, do not assume you must demonstrate advanced performance in those areas. Answer based on your genuine scope of practice.</p>
+          </details>
+
+          <details>
+            <summary>2. Consider your discipline and learner profile</summary>
+            <p>GenAI use may look different in engineering, teacher education, business, arts, or language education. Consider what responsible and meaningful use looks like in your field.</p>
+          </details>
+
+          <details>
+            <summary>3. Focus on evidence from practice</summary>
+            <p>Ask yourself: What have I actually done? What can I do confidently? What have I only read about? This helps separate awareness from capability.</p>
+          </details>
+
+          <details>
+            <summary>4. Basic is not “bad” and Advanced is not always necessary</summary>
+            <p>The Framework is developmental. A lower level may simply mean you are at an earlier stage, or that a given area is less central to your role right now.</p>
+          </details>
+
+          <details>
+            <summary>5. Use your results to plan, not to judge yourself</summary>
+            <p>The purpose of the Framework is to identify next steps for growth. A profile with variation across dimensions is normal and expected.</p>
+          </details>
+
+          <div class="ai-box">
+            <strong>AI-supported reflection</strong>
+            <button class="btn btn-secondary" onclick="insertPrompt('prompt4')">Show reflection prompt</button>
+            <div class="prompt" id="prompt4" style="display:none;">
+Here is my teaching context and my tentative self-assessment profile. Help me interpret my results realistically. Which areas seem most urgent, and which next step would be manageable for me?
+            </div>
+          </div>
+
+          <button class="btn" onclick="markComplete('tips')">Mark section as completed</button>
+        </section>
+
+        <section id="wrap-up" class="track">
+          <h2>Wrap-up</h2>
+          <p class="section-intro">
+            You have completed the introductory module on the Framework as a whole.
+          </p>
+
+          <div class="callout">
+            <strong>Key takeaway:</strong> The Framework is not just a list of skills. It is a structured way to understand GenAI-responsive teaching across
+            <strong>four dimensions</strong>, <strong>two perspectives</strong>, and <strong>three levels</strong>, so that professional learning can be more focused and meaningful.
+          </div>
+
+          <label for="exitReflection">Final reflection: What is one insight you are taking away from this module?</label>
+          <textarea id="exitReflection" placeholder="Write one short takeaway or action you want to remember."></textarea>
+          <button class="btn" onclick="saveReflection()">Save reflection</button>
+
+          <div id="reflectionSaved" class="feedback"></div>
+
+          <div class="footer-nav">
+            <button class="btn btn-secondary" onclick="alert('Platform integration point: open self-assessment report or pre-test review.')">
+              Review self-assessment
+            </button>
+            <button class="btn" onclick="alert('Platform integration point: proceed to Module 2 — GenAI Literacy.')">
+              Continue to Module 2
+            </button>
+          </div>
+
+          <p class="small-note" style="margin-top:12px;">
+            Suggested next step: proceed to <strong>Module 2 — GenAI Literacy</strong>, ideally using your self-assessment results to choose an appropriate difficulty level.
+          </p>
+
+          <button class="btn btn-secondary" onclick="markComplete('wrap-up')">Mark section as completed</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const completedSections = new Set();
+
+    function updateProgress(){
+      const total = document.querySelectorAll('.track').length;
+      const done = completedSections.size;
+      const percent = Math.round((done / total) * 100);
+      document.getElementById('progressBar').style.width = percent + '%';
+      document.getElementById('progressText').textContent = percent + '%';
+    }
+
+    function markComplete(id){
+      completedSections.add(id);
+      updateProgress();
+    }
+
+    function showStructure(type, el){
+      document.querySelectorAll('.pill').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+
+      const box = document.getElementById('structureReveal');
+      const content = {
+        dimensions: `
+          <strong>4 Dimensions</strong><br>
+          The Framework covers four major areas of university teaching practice:
+          <ul>
+            <li>GenAI Literacy</li>
+            <li>Curriculum / Learning Design</li>
+            <li>Teaching and Learning</li>
+            <li>Assessment</li>
+          </ul>
+          These dimensions help organise GenAI-responsive competency in a practical and pedagogically meaningful way.
+        `,
+        levels: `
+          <strong>3 Levels</strong><br>
+          Each dimension is described across three developmental levels:
+          <ul>
+            <li><strong>Basic:</strong> foundational understanding and initial use</li>
+            <li><strong>Intermediate:</strong> purposeful and contextualised practice</li>
+            <li><strong>Advanced:</strong> strategic, critical, and innovative capability</li>
+          </ul>
+        `,
+        perspectives: `
+          <strong>2 Perspectives</strong><br>
+          The Framework captures both:
+          <ul>
+            <li><strong>Teacher’s own usage</strong> of GenAI</li>
+            <li><strong>Empowering students’ usage</strong> of GenAI</li>
+          </ul>
+          This is important because teacher capability and student guidance are related, but not identical.
+        `,
+        cells: `
+          <strong>24 Cells</strong><br>
+          Each competency cell represents the intersection of:
+          <ul>
+            <li>one dimension</li>
+            <li>one level</li>
+            <li>one perspective</li>
+          </ul>
+          So: 4 dimensions × 3 levels × 2 perspectives = 24 cells in total.
+        `
+      };
+      box.innerHTML = content[type];
+    }
+
+    function checkQuiz(){
+      const answers = {
+        q1: 'c',
+        q2: 'c',
+        q3: 'b',
+        q4: 'a'
+      };
+
+      for(let i=1; i<=4; i++){
+        const q = 'q' + i;
+        const selected = document.querySelector(`input[name="${q}"]:checked`);
+        const feedback = document.getElementById('fb' + i);
+
+        if(!selected){
+          feedback.textContent = 'Please select an answer.';
+          feedback.className = 'feedback incorrect';
+          continue;
+        }
+
+        if(selected.value === answers[q]){
+          feedback.textContent = 'Correct.';
+          feedback.className = 'feedback correct';
+        } else {
+          feedback.textContent = 'Not quite. Please review the section and try again.';
+          feedback.className = 'feedback incorrect';
+        }
+      }
+    }
+
+    function insertPrompt(id){
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function saveFieldData(){
+      const data = {
+        role: document.getElementById('role').value,
+        discipline: document.getElementById('discipline').value,
+        context: document.getElementById('context').value
+      };
+      localStorage.setItem('module1_context', JSON.stringify(data));
+      alert('Your teaching context has been saved locally in this browser.');
+    }
+
+    function saveGoals(){
+      const checked = Array.from(document.querySelectorAll('.checklist input:checked')).map(i => i.value);
+      const goalText = document.getElementById('goalText').value;
+
+      const goals = { checked, goalText };
+      localStorage.setItem('module1_goals', JSON.stringify(goals));
+
+      const msg = document.getElementById('goalSaved');
+      msg.textContent = 'Your learning goals have been saved.';
+      msg.className = 'feedback correct';
+    }
+
+    function saveReflection(){
+      const reflection = document.getElementById('exitReflection').value;
+      localStorage.setItem('module1_reflection', reflection);
+
+      const msg = document.getElementById('reflectionSaved');
+      msg.textContent = 'Your reflection has been saved.';
+      msg.className = 'feedback correct';
+    }
+
+    window.addEventListener('load', () => {
+      const savedContext = JSON.parse(localStorage.getItem('module1_context') || '{}');
+      if(savedContext.role) document.getElementById('role').value = savedContext.role;
+      if(savedContext.discipline) document.getElementById('discipline').value = savedContext.discipline;
+      if(savedContext.context) document.getElementById('context').value = savedContext.context;
+
+      const savedGoals = JSON.parse(localStorage.getItem('module1_goals') || '{}');
+      if(savedGoals.checked){
+        document.querySelectorAll('.checklist input').forEach(input => {
+          if(savedGoals.checked.includes(input.value)) input.checked = true;
+        });
+      }
+      if(savedGoals.goalText) document.getElementById('goalText').value = savedGoals.goalText;
+
+      const savedReflection = localStorage.getItem('module1_reflection');
+      if(savedReflection) document.getElementById('exitReflection').value = savedReflection;
+
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
